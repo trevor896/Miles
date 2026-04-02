@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - Miles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-bg: #fff;
+            --sidebar-active: #e6e6e6;
+            --sidebar-icon: #888;
+            --sidebar-active-icon: #4f3cff;
+            --main-bg: #f5f6fa;
+            --card-bg: #fff;
+            --card-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            --primary: #4f3cff;
+            --primary-dark: #3a2eb7;
+            --text-main: #222;
+            --text-muted: #888;
+            --border: #e0e0e0;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f1c40f;
+            --info: #3498db;
+            --gray: #f5f6fa;
+        }
+        html, body {
+            height: 100%;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--main-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+        .dashboard-root {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 220px;
+            background: var(--sidebar-bg);
+            box-shadow: 1px 0 0 var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 32px 0 0 0;
+        }
+        .sidebar .brand {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-left: 32px;
+            margin-bottom: 32px;
+        }
+        .sidebar nav {
+            flex: 1;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar li {
+            margin-bottom: 4px;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 32px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 1.08rem;
+            border-radius: 8px 0 0 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .sidebar a.active, .sidebar a:hover {
+            background: var(--sidebar-active);
+            color: var(--primary);
+        }
+        .sidebar a .fa {
+            font-size: 1.2em;
+        }
+        .sidebar .bottom-links {
+            margin-top: auto;
+            margin-bottom: 32px;
+        }
+        .sidebar .bottom-links a {
+            color: var(--text-muted);
+            font-size: 1rem;
+            padding: 10px 32px;
+            border-radius: 8px 0 0 8px;
+        }
+        .sidebar .bottom-links a.active, .sidebar .bottom-links a:hover {
+            background: var(--sidebar-active);
+            color: var(--primary);
+        }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 32px 40px 0 40px;
+        }
+        .topbar .dashboard-title {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        .topbar .dashboard-controls {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .topbar .search-box {
+            background: #ededed;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+        }
+        .topbar .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 10px 8px;
+            font-size: 1rem;
+        }
+        .topbar .search-box .fa-search {
+            color: #aaa;
+        }
+        .topbar .date-picker {
+            background: #ededed;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 1rem;
+            color: var(--text-main);
+            border: none;
+            outline: none;
+        }
+        .topbar .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #bbb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #fff;
+            overflow: hidden;
+        }
+        .dashboard-content {
+            flex: 1;
+            padding: 32px 40px 40px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+        .dashboard-cards {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 24px 32px;
+            min-width: 220px;
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .dashboard-card .card-title {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .dashboard-card .card-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+        .dashboard-card .card-trend {
+            font-size: 0.95rem;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .dashboard-card .card-trend.negative {
+            color: var(--danger);
+        }
+        .dashboard-main-row {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+        .dashboard-main-col {
+            flex: 2 1 0;
+            display: flex;
+            flex-direction: row;
+            gap: 32px;
+        }
+        .dashboard-card.chart-card, .calendar-card {
+            flex: 1;
+        }
+        .dashboard-side-col {
+            flex: 1 1 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            min-width: 320px;
+        }
+        .dashboard-card.chart-card {
+            padding: 24px 32px 16px 32px;
+        }
+        .dashboard-card .chart-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 18px;
+            height: 160px;
+            margin-bottom: 8px;
+        }
+        .bar {
+            width: 32px;
+            border-radius: 8px 8px 0 0;
+            background: linear-gradient(135deg, #4f3cff 60%, #b3aaff 100%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .bar.active {
+            background: linear-gradient(135deg, #222 60%, #4f3cff 100%);
+        }
+        .bar-labels {
+            display: flex;
+            gap: 18px;
+            justify-content: flex-start;
+            font-size: 0.98rem;
+            color: var(--text-muted);
+        }
+        .calendar-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 24px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .calendar-nav button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .calendar-nav button:hover {
+            background: var(--border);
+        }
+        .calendar-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .calendar-day {
+            text-align: center;
+            padding: 8px 0;
+            border-radius: 8px;
+            color: var(--text-main);
+            background: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .calendar-day:hover {
+            background: var(--border);
+        }
+        .calendar-day.today {
+            background: var(--primary);
+            color: #fff;
+            font-weight: bold;
+        }
+        .calendar-day.selected {
+            background: var(--primary-dark);
+            color: #fff;
+        }
+        .calendar-day.inactive {
+            color: #bbb;
+            cursor: default;
+        }
+        .calendar-day.inactive:hover {
+            background: none;
+        }
+        .purchases-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 24px 32px;
+        }
+        .purchases-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        .purchases-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .purchases-table th, .purchases-table td {
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 1rem;
+        }
+        .purchases-table tr {
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+        .purchases-table tbody tr:hover {
+            background: #f5f5f5;
+            cursor: pointer;
+        }
+            background: #fafbfc;
+        }
+        .purchases-table tr {
+            border-bottom: 1px solid var(--border);
+        }
+        .purchases-table tr:last-child {
+            border-bottom: none;
+        }
+        .purchases-table .purchase-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 16px;
+            font-size: 0.98rem;
+            font-weight: 600;
+            background: #e6f4ea;
+            color: var(--success);
+        }
+        .status-badge.paid {
+            background: #e6f4ea;
+            color: var(--success);
+        }
+        .status-badge.pending {
+            background: #fffbe6;
+            color: var(--warning);
+        }
+        .status-badge.failed {
+            background: #fdeaea;
+            color: var(--danger);
+        }
+        .topbar button:hover {
+            background: #d0d0d0 !important;
+            color: #333 !important;
+        }
+        @media (max-width: 800px) {
+            .dashboard-content, .topbar {
+                padding: 16px 8px 8px 8px;
+            }
+            .sidebar {
+                width: 100px;
+                padding-left: 0;
+            }
+            .sidebar .brand {
+                margin-left: 8px;
+                font-size: 1.2rem;
+            }
+            .sidebar a, .sidebar .bottom-links a {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+            .dashboard-main-col {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-root">
+        <aside class="sidebar">
+            <div class="brand">Miles</div>
+            <nav>
+                <ul>
+                    <li><a href="seller-dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="seller-customers.html"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="seller-analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                    <li><a href="index.html"><i class="fas fa-globe"></i> Browse Miles</a></li>
+                    <li><a href="#"><i class="fas fa-comments"></i> Forum</a></li>
+                </ul>
+                <div class="bottom-links">
+                    <a href="seller-settings.html"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="#"><i class="fas fa-question-circle"></i> Help Center</a>
+                    <a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a>
+                </div>
+            </nav>
+        </aside>
+        <div class="main">
+            <div class="topbar">
+                <div class="dashboard-title">Dashboard</div>
+                <div class="dashboard-controls">
+                    <div style="display: flex; gap: 8px;">
+                        <button class="period-btn" data-period="day" style="background: #ededed; border: none; border-radius: 8px 0 0 8px; padding: 8px 18px; font-weight: 600; color: #888; cursor: pointer;">Day</button>
+                        <button class="period-btn" data-period="week" style="background: #ededed; border: none; padding: 8px 18px; font-weight: 600; color: #888; cursor: pointer;">Week</button>
+                        <button class="period-btn active" data-period="month" style="background: var(--primary); border: none; color: #fff; font-weight: 600; padding: 8px 18px; cursor: pointer;">Month</button>
+                        <button class="period-btn" data-period="year" style="background: #ededed; border: none; border-radius: 0 8px 8px 0; padding: 8px 18px; font-weight: 600; color: #888; cursor: pointer;">Year</button>
+                    </div>
+                    <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search..."></div>
+                    <input class="date-picker" type="text" value="1 Sep 2024 - 31 Sep 2024" readonly>
+                    <div class="user-avatar"><i class="fas fa-user"></i></div>
+                </div>
+            </div>
+            <div class="dashboard-content">
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <div class="card-title">Total Revenue</div>
+                        <div class="card-value">$23,902</div>
+                        <div class="card-trend"><i class="fas fa-arrow-up"></i> 2.2% from last month</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-title">Active Users</div>
+                        <div class="card-value">16,815</div>
+                        <div class="card-trend"><i class="fas fa-arrow-up"></i> 1.7% from last month</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-title">Customers</div>
+                        <div class="card-value">1,457</div>
+                        <div class="card-trend negative"><i class="fas fa-arrow-down"></i> 2.9% from last month</div>
+                    </div>
+                </div>
+                <div class="dashboard-main-row">
+                    <div class="dashboard-main-col">
+                        <div class="dashboard-card chart-card">
+                            <div class="chart-title">Total Revenue</div>
+                            <canvas id="revenueBarChart" height="180"></canvas>
+                        </div>
+                        <div class="calendar-card">
+                            <div class="calendar-header">
+                                <button class="calendar-nav-btn" id="prevMonth">&lt;</button>
+                                <div class="calendar-title" id="calendarTitle">September 2024</div>
+                                <button class="calendar-nav-btn" id="nextMonth">&gt;</button>
+                            </div>
+                            <div class="calendar-grid" id="calendarGrid">
+                                <div class="calendar-day inactive">17</div>
+                                <div class="calendar-day inactive">18</div>
+                                <div class="calendar-day today">19</div>
+                                <div class="calendar-day">20</div>
+                                <div class="calendar-day">21</div>
+                                <div class="calendar-day">22</div>
+                                <div class="calendar-day">23</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-side-col">
+                        <div class="purchases-card">
+                            <div class="purchases-title">Customer Purchases</div>
+                            <table class="purchases-table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Customer Name</th>
+                                        <th>Customer ID</th>
+                                        <th>Amount</th>
+                                            <li><a href="add-product.html" style="background: #007bff; color: #fff; border-radius: 8px; padding: 14px 0; font-weight: bold; text-align: center; text-decoration: none; font-size: 1.1em; box-shadow: 0 2px 8px rgba(0,0,0,0.04);"><i class="fas fa-plus"></i> Add Product</a></li>
+                                            <li><a href="add-product.html" style="background: #007bff; color: #fff; border-radius: 8px; padding: 14px 0; font-weight: bold; text-align: center; text-decoration: none; font-size: 1.1em; box-shadow: 0 2px 8px rgba(0,0,0,0.04);"><i class="fas fa-plus"></i> Add Product</a></li>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=facearea&w=48&h=48" class="purchase-img" alt="Product"> Digital Marketing</td>
+                                        <td>Aria</td>
+                                        <td>#3456791</td>
+                                        <td>$372.00</td>
+                                        <td><span class="status-badge paid">Paid</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+        async function loadDashboardData() {
+            // This would load seller-specific stats from the backend
+            document.getElementById('totalProducts').textContent = '0';
+            document.getElementById('totalSales').textContent = '0';
+            document.getElementById('totalRevenue').textContent = '$0';
+            document.getElementById('pendingOrders').textContent = '0';
+        }
+
+        // Load seller's products
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/products', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const productsGrid = document.getElementById('productsGrid');
+                    productsGrid.innerHTML = '';
+
+                    if (data.products.length === 0) {
+                        productsGrid.innerHTML = '<p>No products found. Add your first product!</p>';
+                        return;
+                    }
+
+                    // Filter products by current seller
+                    const sellerProducts = data.products.filter(product => product.seller_id === currentUser.id);
+
+                    sellerProducts.forEach(product => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'product-card';
+                        productCard.innerHTML = `
+                            <div class="product-image">
+                                ${product.image_url ? `<img src="${product.image_url}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">` : '<i class="fas fa-image" style="font-size: 3rem;"></i>'}
+                            </div>
+                            <div class="product-info">
+                                <h4>${product.name}</h4>
+                                <div class="product-price">$${product.price}</div>
+                                <div style="color: #666; font-size: 0.9rem; margin: 0.5rem 0;">
+                                    Stock: ${product.stock_quantity} | ${product.category}
+                                </div>
+                                <div class="product-actions">
+                                    <button class="btn btn-edit" onclick="editProduct(${product.id})">Edit</button>
+                                    <button class="btn btn-delete" onclick="deleteProduct(${product.id})">Delete</button>
+                                </div>
+                            </div>
+                        `;
+                        productsGrid.appendChild(productCard);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        // Open add product modal
+        function openAddProductModal() {
+            editingProductId = null;
+            document.getElementById('modalTitle').textContent = 'Add New Product';
+            document.getElementById('productForm').reset();
+            document.getElementById('productModal').style.display = 'block';
+        }
+
+        // Edit product
+        function editProduct(productId) {
+            // This would load product data and open modal for editing
+            alert('Edit product functionality would be implemented here');
+        }
+
+        // Delete product
+        async function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                // This would call a delete API endpoint
+                alert('Delete product functionality would be implemented here');
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+            document.getElementById('productForm').reset();
+            editingProductId = null;
+        }
+
+        // Handle product form submission
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const productData = {
+                name: formData.get('name'),
+                description: formData.get('description'),
+                price: parseFloat(formData.get('price')),
+                category: formData.get('category'),
+                type: formData.get('type'),
+                colour: formData.get('colour'),
+                size: formData.get('size'),
+                image_url: formData.get('image_url'),
+                stock_quantity: parseInt(formData.get('stock_quantity')) || 0
+            };
+
+            try {
+                const response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(productData)
+                });
+
+                if (response.ok) {
+                    closeModal();
+                    loadProducts();
+                    alert('Product added successfully!');
+                } else {
+                    const error = await response.json();
+                    alert(error.error || 'Error adding product');
+                }
+            } catch (error) {
+                console.error('Error adding product:', error);
+                alert('Error adding product');
+            }
+        });
+
+        // Navigation
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = e.target.getAttribute('href').substring(1);
+
+                // Hide all sections
+                document.querySelectorAll('main > div').forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Show target section
+                document.getElementById(target + '-section').style.display = 'block';
+
+                // Update active link
+                document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+                e.target.classList.add('active');
+            });
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('productModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    async function fetchRevenueBarChart() {
+        const currentUser = JSON.parse(localStorage.getItem('user')) || {};
+        const token = localStorage.getItem('token');
+        const res = await fetch('/api/daily-sales?seller_id=' + currentUser.id, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        let days = [];
+        let sales = [];
+        if (res.ok) {
+            const data = await res.json();
+            days = data.dailySales.map(d => d.day);
+            sales = data.dailySales.map(d => d.sales);
+        } else {
+            days = ['Mon','Tue','Wed','Thu','Fri','Sat'];
+            sales = [0,0,0,0,0,0];
+        }
+        const ctx = document.getElementById('revenueBarChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: days,
+                datasets: [{
+                    label: 'Revenue',
+                    data: sales,
+                    backgroundColor: '#4f3cff',
+                    hoverBackgroundColor: '#3a2eb7',
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Revenue: $' + context.parsed.y;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true },
+                    x: { title: { display: true, text: 'Day' } }
+                },
+                onClick: function(evt, elements) {
+                    if (elements.length > 0) {
+                        const idx = elements[0].index;
+                        alert('Revenue for ' + days[idx] + ': $' + sales[idx]);
+                    }
+                }
+            }
+        });
+    }
+    fetchRevenueBarChart();
+    </script>
+</body>
+</html>

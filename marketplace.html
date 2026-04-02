@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace - Miles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: white;
+            color: black;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links li {
+            margin: 0 15px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: black;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-toggle {
+            cursor: pointer;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            z-index: 1000;
+            padding: 8px 0;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu li {
+            margin: 0;
+        }
+        .dropdown-menu a {
+            padding: 10px 20px;
+            display: block;
+            white-space: nowrap;
+        }
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+            transform: none;
+        }
+        .right-section {
+            display: flex;
+            align-items: center;
+        }
+        .join-us {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .icons a {
+            margin: 0 10px;
+            font-size: 18px;
+            text-decoration: none;
+            color: black;
+        }
+        .page-btn {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            color: #4f3cff;
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+        .page-btn:hover {
+            background: #4f3cff;
+            color: #fff;
+        }
+        .page-btn.active {
+            background: #4f3cff;
+            color: #fff;
+            border: none;
+        }
+        #prevBtn:hover, #nextBtn:hover {
+            background: #4f3cff;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        #prevBtn:hover::before, #nextBtn:hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: liquidFill 0.6s ease-in-out;
+        }
+        @keyframes liquidFill {
+            0% { left: -100%; }
+            50% { left: 0%; }
+            100% { left: 100%; }
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        footer {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="brand">Miles</div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="marketplace.html"><i class="fas fa-shopping-bag"></i> Marketplace</a></li>
+            <li><a href="aboutus.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle"><i class="fas fa-tachometer-alt"></i> Dashboards <i class="fas fa-chevron-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="admin-dashboard.html"><i class="fas fa-crown"></i> Admin</a></li>
+                    <li><a href="seller-dashboard.html"><i class="fas fa-store"></i> Seller</a></li>
+                    <li><a href="buyer-dashboard.html"><i class="fas fa-shopping-cart"></i> Buyer</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="right-section">
+            <a href="login.html" class="join-us">Join Us</a>
+            <div class="icons">
+                <a href="#" title="Search"><i class="fas fa-search"></i></a>
+                <a href="#" title="User"><i class="fas fa-user"></i></a>
+                <a href="cart.html" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+                <a href="#" title="Notifications"><i class="fas fa-bell"></i></a>
+            </div>
+        </div>
+    </nav>
+    <div style="background: #f5f6fa; min-height: 100vh; padding: 0;">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; gap: 30px; padding: 40px 0 0 0;">
+            <!-- Sidebar -->
+            <aside style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 32px 24px; min-width: 240px; max-width: 260px; flex: 0 0 260px;">
+                <div style="font-weight: bold; font-size: 1.1em; margin-bottom: 18px; cursor: pointer;" onclick="toggleDropdown()">Category <i class="fas fa-chevron-down" id="dropdownIcon"></i></div>
+                <select id="categorySelect" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #e0e0e0; background: #fff; color: #222; display: none;">
+                    <option value="T-Shirt">T-Shirt</option>
+                    <option value="Sweatshirt" selected>Sweatshirt</option>
+                    <option value="Dress">Dress</option>
+                    <option value="Pants and Skirt">Pants and Skirt</option>
+                    <option value="Swimsuit">Swimsuit</option>
+                    <option value="Stuff and Accessories">Stuff and Accessories</option>
+                </select>
+                <div style="font-weight: bold; font-size: 1.1em; margin-bottom: 10px;">Filter by :</div>
+                <div style="margin-bottom: 18px;">
+                    <div style="font-size: 0.98em; margin-bottom: 6px; cursor: pointer;" onclick="toggleFilter('type')">Type <i class="fas fa-chevron-down" id="typeIcon"></i></div>
+                    <div id="typeFilter" style="display: none; flex-direction: column; gap: 4px;">
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Basic"> Basic</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Pattern"> Pattern</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Hoodie"> Hoodie</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Zipper"> Zipper</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Oversize"> Oversize</label>
+                    </div>
+                </div>
+                <div style="margin-bottom: 18px;">
+                    <div style="font-size: 0.98em; margin-bottom: 6px; cursor: pointer;" onclick="toggleFilter('colour')">Colour <i class="fas fa-chevron-down" id="colourIcon"></i></div>
+                    <div id="colourFilter" style="display: none; flex-direction: column; gap: 4px;">
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Black"> Black</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Red"> Red</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Brown"> Brown</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Multicolour"> Multicolour</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Grey"> Grey</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="Blue"> Blue</label>
+                    </div>
+                </div>
+                <div style="margin-bottom: 18px;">
+                    <div style="font-size: 0.98em; margin-bottom: 6px; cursor: pointer;" onclick="toggleFilter('size')">Size <i class="fas fa-chevron-down" id="sizeIcon"></i></div>
+                    <div id="sizeFilter" style="display: none; flex-direction: column; gap: 4px;">
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="S"> S</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="M"> M</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="L"> L</label>
+                        <label><input type="checkbox" class="filter-checkbox" data-filter="XL"> XL</label>
+                    </div>
+                </div>
+                <div style="margin-bottom: 18px;">
+                    <div style="font-size: 0.98em; margin-bottom: 6px;">Price</div>
+                    <input type="range" min="0" max="500" style="width: 100%;">
+                </div>
+                <button style="background: #4f3cff; color: #fff; border: none; border-radius: 8px; padding: 10px 0; width: 100%; font-weight: bold; cursor: pointer;">Apply</button>
+            </aside>
+            <!-- Main Content -->
+            <main style="flex: 1 1 0;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+                    <div id="categoryTitle" style="font-size: 2em; font-weight: bold; color: #222;">Sweatshirt</div>
+                    <div style="position: relative; margin-left: -50px;">
+                        <div style="font-weight: bold; cursor: pointer;" onclick="toggleSortDropdown()">Sort by <i class="fas fa-chevron-down" id="sortIcon"></i></div>
+                        <select id="sortSelect" style="display: none; position: absolute; top: 100%; left: 0; width: 200px; padding: 8px; border-radius: 8px; border: 1px solid #e0e0e0; background: #fff; color: #222; z-index: 10;">
+                            <option value="Most popular">Most popular</option>
+                            <option value="Latest">Latest</option>
+                            <option value="Used">Used</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="activeFilters" style="display: flex; flex-wrap: wrap; gap: 10px 24px; margin-bottom: 18px;">
+                    <!-- Active filters will be added here dynamically -->
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px 24px;">
+                    <!-- Product Card Example -->
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <img src="https://via.placeholder.com/220x260?text=Product+1" alt="Line-Pattern Zipper Sweatshirt" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Line-Pattern Zipper Sweatshirt</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$200</div>
+                        <button class="add-cart-btn" data-id="1" data-name="Line-Pattern Zipper Sweatshirt" data-price="$200" data-image="https://via.placeholder.com/220x260?text=Product+1" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <img src="https://via.placeholder.com/220x260?text=Product+2" alt="Black Fantasy Sweatshirt" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Black Fantasy Sweatshirt</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$200</div>
+                        <button class="add-cart-btn" data-id="2" data-name="Black Fantasy Sweatshirt" data-price="$200" data-image="https://via.placeholder.com/220x260?text=Product+2" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <span style="position: absolute; top: 18px; left: 18px; background: #4f3cff; color: #fff; font-size: 0.85em; border-radius: 8px; padding: 3px 10px; font-weight: bold;">BEST SELLER</span>
+                        <img src="https://via.placeholder.com/220x260?text=Product+3" alt="Brooklyn-NYC Sweatshirt" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Brooklyn-NYC Sweatshirt</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$200 <span style="color: #aaa; text-decoration: line-through; font-size: 0.95em;">$420</span></div>
+                        <button class="add-cart-btn" data-id="3" data-name="Brooklyn-NYC Sweatshirt" data-price="$200" data-image="https://via.placeholder.com/220x260?text=Product+3" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <span style="position: absolute; top: 18px; left: 18px; background: #ff5a5f; color: #fff; font-size: 0.85em; border-radius: 8px; padding: 3px 10px; font-weight: bold;">HOT PROMO</span>
+                        <img src="https://via.placeholder.com/220x260?text=Product+4" alt="Basic Plain Shirt" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Basic Plain Shirt</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$200 <span style="color: #aaa; text-decoration: line-through; font-size: 0.95em;">$420</span></div>
+                        <button class="add-cart-btn" data-id="4" data-name="Basic Plain Shirt" data-price="$200" data-image="https://via.placeholder.com/220x260?text=Product+4" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <span style="position: absolute; top: 18px; left: 18px; background: #4f3cff; color: #fff; font-size: 0.85em; border-radius: 8px; padding: 3px 10px; font-weight: bold;">NEW</span>
+                        <img src="https://via.placeholder.com/220x260?text=Product+5" alt="Basic Orange Sweatshirt" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Basic Orange Sweatshirt</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$200</div>
+                        <button class="add-cart-btn" data-id="5" data-name="Basic Orange Sweatshirt" data-price="$200" data-image="https://via.placeholder.com/220x260?text=Product+5" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <img src="https://via.placeholder.com/220x260?text=Product+6" alt="Alui Sweatshirt X Avent G" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Alui Sweatshirt X Avent G</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$200</div>
+                        <button class="add-cart-btn" data-id="6" data-name="Alui Sweatshirt X Avent G" data-price="$200" data-image="https://via.placeholder.com/220x260?text=Product+6" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <span style="position: absolute; top: 18px; left: 18px; background: #ff5a5f; color: #fff; font-size: 0.85em; border-radius: 8px; padding: 3px 10px; font-weight: bold;">HOT PROMO</span>
+                        <img src="https://via.placeholder.com/220x260?text=Product+7" alt="Flowers Printed Sweatshirt" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Flowers Printed Sweatshirt</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$200 <span style="color: #aaa; text-decoration: line-through; font-size: 0.95em;">$420</span></div>
+                        <button class="add-cart-btn" data-id="7" data-name="Flowers Printed Sweatshirt" data-price="$200" data-image="https://via.placeholder.com/220x260?text=Product+7" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <span style="position: absolute; top: 18px; left: 18px; background: #4f3cff; color: #fff; font-size: 0.85em; border-radius: 8px; padding: 3px 10px; font-weight: bold;">NEW</span>
+                        <img src="https://via.placeholder.com/220x260?text=Product+8" alt="Relaxed Fit Printed Sweatshirt" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Relaxed Fit Printed Sweatshirt</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$200</div>
+                        <button class="add-cart-btn" data-id="8" data-name="Relaxed Fit Printed Sweatshirt" data-price="$200" data-image="https://via.placeholder.com/220x260?text=Product+8" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <img src="https://via.placeholder.com/220x260?text=Product+9" alt="Letter Pattern Knitted Vest" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Letter Pattern Knitted Vest</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$200</div>
+                        <button class="add-cart-btn" data-id="9" data-name="Letter Pattern Knitted Vest" data-price="$200" data-image="https://via.placeholder.com/220x260?text=Product+9" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <!-- Added another row of products (dummy for now) -->
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <img src="https://via.placeholder.com/220x260?text=Product+10" alt="Product 10" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Product 10</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$210</div>
+                        <button class="add-cart-btn" data-id="10" data-name="Product 10" data-price="$210" data-image="https://via.placeholder.com/220x260?text=Product+10" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <img src="https://via.placeholder.com/220x260?text=Product+11" alt="Product 11" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Product 11</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$220</div>
+                        <button class="add-cart-btn" data-id="11" data-name="Product 11" data-price="$220" data-image="https://via.placeholder.com/220x260?text=Product+11" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <img src="https://via.placeholder.com/220x260?text=Product+12" alt="Product 12" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Product 12</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$230</div>
+                        <button class="add-cart-btn" data-id="12" data-name="Product 12" data-price="$230" data-image="https://via.placeholder.com/220x260?text=Product+12" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <img src="https://via.placeholder.com/220x260?text=Product+13" alt="Product 13" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Product 13</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$240</div>
+                        <button class="add-cart-btn" data-id="13" data-name="Product 13" data-price="$240" data-image="https://via.placeholder.com/220x260?text=Product+13" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <img src="https://via.placeholder.com/220x260?text=Product+14" alt="Product 14" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Product 14</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$250</div>
+                        <button class="add-cart-btn" data-id="14" data-name="Product 14" data-price="$250" data-image="https://via.placeholder.com/220x260?text=Product+14" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <div style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 18px; position: relative;">
+                        <img src="https://via.placeholder.com/220x260?text=Product+15" alt="Product 15" style="width: 100%; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: #222; margin-bottom: 6px;">Product 15</div>
+                        <div style="font-size: 1.1em; color: #222; margin-bottom: 10px;">$260</div>
+                        <button class="add-cart-btn" data-id="15" data-name="Product 15" data-price="$260" data-image="https://via.placeholder.com/220x260?text=Product+15" style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                    <!-- Added another row of products (dummy for now) -->
+                    <div style="background: #f8f8f8; border-radius: 10px; padding: 18px; text-align: center;">
+                        <img src="https://via.placeholder.com/160x160?text=Product+10" alt="Product 10" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px;">
+                        <div style="margin: 10px 0 5px 0; font-weight: bold;">Product 10</div>
+                        <div style="color: #007bff; font-size: 15px; font-weight: bold;">$210</div>
+                    </div>
+                    <div style="background: #f8f8f8; border-radius: 10px; padding: 18px; text-align: center;">
+                        <img src="https://via.placeholder.com/160x160?text=Product+11" alt="Product 11" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px;">
+                        <div style="margin: 10px 0 5px 0; font-weight: bold;">Product 11</div>
+                        <div style="color: #007bff; font-size: 15px; font-weight: bold;">$220</div>
+                    </div>
+                    <div style="background: #f8f8f8; border-radius: 10px; padding: 18px; text-align: center;">
+                        <img src="https://via.placeholder.com/160x160?text=Product+12" alt="Product 12" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px;">
+                        <div style="margin: 10px 0 5px 0; font-weight: bold;">Product 12</div>
+                        <div style="color: #007bff; font-size: 15px; font-weight: bold;">$230</div>
+                    </div>
+                    <div style="background: #f8f8f8; border-radius: 10px; padding: 18px; text-align: center;">
+                        <img src="https://via.placeholder.com/160x160?text=Product+13" alt="Product 13" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px;">
+                        <div style="margin: 10px 0 5px 0; font-weight: bold;">Product 13</div>
+                        <div style="color: #007bff; font-size: 15px; font-weight: bold;">$240</div>
+                    </div>
+                    <div style="background: #f8f8f8; border-radius: 10px; padding: 18px; text-align: center;">
+                        <img src="https://via.placeholder.com/160x160?text=Product+14" alt="Product 14" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px;">
+                        <div style="margin: 10px 0 5px 0; font-weight: bold;">Product 14</div>
+                        <div style="color: #007bff; font-size: 15px; font-weight: bold;">$250</div>
+                    </div>
+                    <div style="background: #f8f8f8; border-radius: 10px; padding: 18px; text-align: center;">
+                        <img src="https://via.placeholder.com/160x160?text=Product+15" alt="Product 15" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px;">
+                        <div style="margin: 10px 0 5px 0; font-weight: bold;">Product 15</div>
+                        <div style="color: #007bff; font-size: 15px; font-weight: bold;">$260</div>
+                    </div>
+                </div>
+                <!-- Pagination -->
+                <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin: 40px 0 0 0;">
+                    <button id="prevBtn" style="background: #fff; border: 1px solid #e0e0e0; color: #4f3cff; border-radius: 8px; padding: 6px 14px; font-weight: bold; cursor: pointer; transition: background 0.3s;">Previous</button>
+                    <div id="pageNumbers" style="display: flex; gap: 8px;">
+                        <!-- Page numbers will be generated here -->
+                    </div>
+                    <button id="nextBtn" style="background: #fff; border: 1px solid #e0e0e0; color: #4f3cff; border-radius: 8px; padding: 6px 14px; font-weight: bold; cursor: pointer; transition: background 0.3s;">Next</button>
+                </div>
+            </main>
+        </div>
+    </div>
+    <footer style="background-color: black; color: white; text-align: center; padding: 10px; margin-top: 40px;">
+        &copy; 2026 Miles. All rights reserved.
+    </footer>
+    <script>
+        // Dummy products data with demo flags
+        // Placeholder product slots, initially empty
+        const PRODUCT_SLOTS = 15;
+        let products = Array(PRODUCT_SLOTS).fill(null);
+
+        // Example API fetch (replace with real endpoint)
+        async function fetchProductsFromAPI(page = 1) {
+            // Replace with your actual API endpoint
+            // const response = await fetch(`/api/products?page=${page}`);
+            // products = await response.json();
+            // For now, keep products as empty slots
+            products = Array(PRODUCT_SLOTS).fill(null);
+            renderProducts();
+            renderPagination();
+        }
+
+        // Call API fetch on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchProductsFromAPI();
+        });
+        // ...existing code...
+        // Add to cart functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // ...existing code...
+            document.querySelectorAll('.add-cart-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const product = {
+                        id: this.getAttribute('data-id'),
+                        name: this.getAttribute('data-name'),
+                        price: this.getAttribute('data-price'),
+                        image: this.getAttribute('data-image')
+                    };
+                    let cart = JSON.parse(localStorage.getItem('milesCart') || '[]');
+                    cart.push(product);
+                    localStorage.setItem('milesCart', JSON.stringify(cart));
+                    // Optionally show a notification
+                    alert(product.name + ' added to cart!');
+                });
+            });
+        });
+        // ...existing code...
+    </script>
+                    const checkbox = document.querySelector(`[data-filter="${filter}"]`);
+                    if (checkbox) checkbox.checked = false;
+                    const filterType = Object.keys(activeFilters).find(key => activeFilters[key].includes(filter));
+                    if (filterType) activeFilters[filterType] = activeFilters[filterType].filter(f => f !== filter);
+                    filterProducts();
+                });
+                activeFiltersDiv.appendChild(span);
+            }
+        }
+
+        // Remove filter tag
+        function removeFilterTag(filter) {
+            const tag = document.querySelector(`[data-filter-tag="${filter}"]`);
+            if (tag) {
+                activeFiltersDiv.removeChild(tag);
+            }
+        }
+
+        // Filter products
+        function filterProducts() {
+            const selectedCategory = categorySelect.value;
+            filteredProducts = products.filter(product => {
+                if (selectedCategory !== 'All' && product.category !== selectedCategory) return false;
+                if (activeFilters.type.length && !activeFilters.type.includes(product.type)) return false;
+                if (activeFilters.colour.length && !activeFilters.colour.includes(product.colour)) return false;
+                if (activeFilters.size.length && !activeFilters.size.includes(product.size)) return false;
+                return true;
+            });
+            currentPage = 1;
+            renderProducts();
+            renderPagination();
+        }
+
+        // Render products
+        function renderProducts() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageProducts = products.slice(start, end);
+            productGrid.innerHTML = '';
+            pageProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.style.background = '#fff';
+                card.style.borderRadius = '18px';
+                card.style.boxShadow = '0 2px 12px rgba(0,0,0,0.04)';
+                card.style.padding = '18px';
+                card.style.position = 'relative';
+                if (!product) {
+                    // Placeholder card
+                    card.innerHTML = `
+                        <div style="height: 32px;"></div>
+                        <div style="width: 100%; height: 220px; border-radius: 12px; background: #f5f6fa; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 1.2em; margin-bottom: 12px;">No product uploaded</div>
+                        <div style="position: absolute; bottom: 18px; left: 18px; font-size: 1.1em; color: #bbb; font-weight: bold; background: #f5f6fa; border-radius: 8px; padding: 6px 14px;">--</div>
+                        <button disabled style="position: absolute; bottom: 18px; right: 18px; background: #e0e0e0; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: not-allowed;"><i class="fas fa-shopping-cart"></i></button>
+                    `;
+                } else {
+                    let label = '';
+                    if (product.isNew) {
+                        label = `<span style="position: absolute; top: 18px; left: 18px; background: #4f3cff; color: #fff; font-size: 0.85em; border-radius: 8px; padding: 3px 10px; font-weight: bold;">NEW</span>`;
+                    } else if (product.isBestSeller) {
+                        label = `<span style="position: absolute; top: 18px; left: 18px; background: #4f3cff; color: #fff; font-size: 0.85em; border-radius: 8px; padding: 3px 10px; font-weight: bold;">BEST SELLER</span>`;
+                    } else if (product.hasDiscount) {
+                        label = `<span style="position: absolute; top: 18px; left: 18px; background: #ff5a5f; color: #fff; font-size: 0.85em; border-radius: 8px; padding: 3px 10px; font-weight: bold;">HOT PROMO</span>`;
+                    }
+                    card.innerHTML = `
+                        ${label}
+                        <div style="font-weight: 600; color: #222; margin-bottom: 8px; font-size: 1.1em; text-align: left;">${product.name}</div>
+                        <img src="${product.image}" alt="${product.name}" style="width: 100%; height: 220px; border-radius: 12px; object-fit: cover; margin-bottom: 12px;">
+                        <div style="position: absolute; bottom: 18px; left: 18px; font-size: 1.1em; color: #007bff; font-weight: bold; background: #f5f6fa; border-radius: 8px; padding: 6px 14px;">$${product.price}${product.hasDiscount ? ` <span style='color: #aaa; text-decoration: line-through; font-size: 0.95em;'>$${product.originalPrice}</span>` : ''}</div>
+                        <button style="position: absolute; bottom: 18px; right: 18px; background: #4f3cff; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; cursor: pointer;"><i class="fas fa-shopping-cart"></i></button>
+                    `;
+                }
+                productGrid.appendChild(card);
+            });
+        }
+
+        // Render pagination
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            pageNumbersDiv.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'page-btn';
+                if (i === currentPage) btn.classList.add('active');
+                btn.textContent = i;
+                btn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderProducts();
+                    renderPagination();
+                });
+                pageNumbersDiv.appendChild(btn);
+            }
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+        }
+
+        // Pagination buttons
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderProducts();
+                renderPagination();
+            }
+        });
+        nextBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderProducts();
+                renderPagination();
+            }
+        });
+
+        // Toggle filter sections
+        function toggleFilter(type) {
+            const filterDiv = document.getElementById(type + 'Filter');
+            const icon = document.getElementById(type + 'Icon');
+            if (filterDiv.style.display === 'none' || filterDiv.style.display === '') {
+                filterDiv.style.display = 'flex';
+                icon.className = 'fas fa-chevron-up';
+            } else {
+                filterDiv.style.display = 'none';
+                icon.className = 'fas fa-chevron-down';
+            }
+        }
+
+        // Toggle sort dropdown
+        function toggleSortDropdown() {
+            const select = document.getElementById('sortSelect');
+            const icon = document.getElementById('sortIcon');
+            if (select.style.display === 'none' || select.style.display === '') {
+                select.style.display = 'block';
+                icon.className = 'fas fa-chevron-up';
+            } else {
+                select.style.display = 'none';
+                icon.className = 'fas fa-chevron-down';
+            }
+        }
+    </script>
+</body>
+</html>

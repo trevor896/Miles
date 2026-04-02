@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Analytics - Miles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f6fa; color: #222; }
+        .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 32px; }
+        h1 { font-size: 2rem; color: #4f3cff; margin-bottom: 24px; }
+        .chart-placeholder { height: 300px; background: #e6e6e6; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #888; font-size: 1.2rem; margin-bottom: 32px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="seller-dashboard.html" style="display:inline-block;margin-bottom:18px;text-decoration:none;color:#4f3cff;font-weight:600;font-size:1.1rem;"><i class="fas fa-arrow-left" style="margin-right:8px;"></i>Back</a>
+        <h1>Seller Analytics Dashboard</h1>
+        <div style="display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 32px;">
+            <div class="stat-card">
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-value" id="statRevenue"><i class="fas fa-dollar-sign"></i> ...</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Sales</div>
+                <div class="stat-value" id="statSales"><i class="fas fa-shopping-cart"></i> ...</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Conversion Rate</div>
+                <div class="stat-value" id="statConversion"><i class="fas fa-percentage"></i> ...</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Returning Customers</div>
+                <div class="stat-value" id="statReturning"><i class="fas fa-user-check"></i> ...</div>
+            </div>
+        </div>
+        <div class="dashboard-charts">
+            <div class="chart-section">
+                <div class="chart-title"><i class="fas fa-chart-line"></i> Revenue Trend (Last 6 Days)</div>
+                <canvas id="revenueChart" height="180"></canvas>
+            </div>
+            <div class="chart-section">
+                <div class="chart-title"><i class="fas fa-clock"></i> Peak Selling Hours (Last 6 Days)</div>
+                <canvas id="peakHoursChart" height="180"></canvas>
+            </div>
+            <div class="chart-section">
+                <div class="chart-title"><i class="fas fa-box"></i> Top Selling Products</div>
+                <ul class="top-products" id="topProducts"></ul>
+            </div>
+        </div>
+        <div class="dashboard-insights">
+            <div class="insight-card">
+                <div class="insight-title"><i class="fas fa-users"></i> Customer Demographics</div>
+                <div class="insight-content">Majority of buyers are aged 25-34, located in urban areas.</div>
+            </div>
+            <div class="insight-card">
+                <div class="insight-title"><i class="fas fa-clock"></i> Peak Sales Hours</div>
+                <div class="insight-content">Most sales occur between 7pm and 10pm.</div>
+            </div>
+            <div class="insight-card">
+                <div class="insight-title"><i class="fas fa-lightbulb"></i> Actionable Tips</div>
+                <ul class="insight-content">
+                    <li>Offer discounts during peak hours.</li>
+                    <li>Promote top products on social media.</li>
+                    <li>Engage returning customers with loyalty rewards.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    // Helper: Get current seller from localStorage (after login)
+    const currentUser = JSON.parse(localStorage.getItem('user')) || {};
+    const token = localStorage.getItem('token');
+
+    // Fetch stats
+    async function fetchStats() {
+        let totalRevenue = 0;
+        let totalSales = 0;
+        let returningCustomers = 0;
+        let conversionRate = 0;
+        let orders = [];
+        let customers = new Set();
+
+        // Get all orders for this seller
+        const resOrders = await fetch('/api/orders?seller_id=' + currentUser.id, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (resOrders.ok) {
+            orders = await resOrders.json();
+            orders.forEach(order => {
+                totalRevenue += order.total_amount;
+                totalSales += 1;
+                customers.add(order.buyer_id);
+            });
+        }
+
+        // Returning customers
+        const customerCounts = {};
+        orders.forEach(order => {
+            customerCounts[order.buyer_id] = (customerCounts[order.buyer_id] || 0) + 1;
+        });
+        returningCustomers = Object.values(customerCounts).filter(count => count > 1).length;
+
+        // Conversion rate (dummy: sales/customers)
+        conversionRate = customers.size > 0 ? ((totalSales / customers.size) * 100).toFixed(1) : 0;
+
+        document.getElementById('statRevenue').innerHTML = `<i class="fas fa-dollar-sign"></i> $${totalRevenue.toLocaleString()}`;
+        document.getElementById('statSales').innerHTML = `<i class="fas fa-shopping-cart"></i> ${totalSales}`;
+        document.getElementById('statConversion').innerHTML = `<i class="fas fa-percentage"></i> ${conversionRate}%`;
+        document.getElementById('statReturning').innerHTML = `<i class="fas fa-user-check"></i> ${returningCustomers}`;
+    }
+
+    // Fetch daily sales for chart (last 6 days)
+    async function fetchDailySales() {
+        const res = await fetch('/api/daily-sales?seller_id=' + currentUser.id, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        let days = [];
+        let sales = [];
+        if (res.ok) {
+            const data = await res.json();
+            days = data.dailySales.map(d => d.day);
+            sales = data.dailySales.map(d => d.sales);
+        } else {
+            // fallback
+            days = ['Mon','Tue','Wed','Thu','Fri','Sat'];
+            sales = [0,0,0,0,0,0];
+        }
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: days,
+                datasets: [{
+                    label: 'Revenue',
+                    data: sales,
+                    borderColor: '#4f3cff',
+                    backgroundColor: 'rgba(79, 60, 255, 0.08)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#4f3cff',
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    }
+
+    // Fetch peak selling hours for chart
+    async function fetchPeakHours() {
+        const res = await fetch('/api/peak-hours?seller_id=' + currentUser.id, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        let hours = [];
+        let sales = [];
+        if (res.ok) {
+            const data = await res.json();
+            hours = data.peakHours.map(h => h.hour);
+            sales = data.peakHours.map(h => h.sales);
+        } else {
+            hours = ['18','19','20','21','22','23'];
+            sales = [0,0,0,0,0,0];
+        }
+        const ctx = document.getElementById('peakHoursChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: hours,
+                datasets: [{
+                    label: 'Sales',
+                    data: sales,
+                    backgroundColor: '#4f3cff',
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                },
+                scales: {
+                    y: { beginAtZero: true },
+                    x: { title: { display: true, text: 'Hour (24h)' } }
+                }
+            }
+        });
+    }
+
+    // Fetch top products
+    async function fetchTopProducts() {
+        const res = await fetch('/api/products?seller_id=' + currentUser.id, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        let products = [];
+        if (res.ok) {
+            const data = await res.json();
+            products = data.products;
+        }
+        products.sort((a, b) => (b.sales || 0) - (a.sales || 0));
+        const topProducts = products.slice(0, 3);
+        const ul = document.getElementById('topProducts');
+        ul.innerHTML = '';
+        topProducts.forEach(p => {
+            ul.innerHTML += `<li><span class="product-name">${p.name}</span> <span class="product-sales">${p.sales || 0} sales</span></li>`;
+        });
+    }
+
+    // Load all analytics
+    async function loadAnalytics() {
+        await fetchStats();
+        await fetchDailySales();
+        await fetchPeakHours();
+        await fetchTopProducts();
+    }
+    loadAnalytics();
+    </script>
+    <style>
+        .stat-card {
+            background: #f5f6fa;
+            border-radius: 12px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+            padding: 18px 24px;
+            min-width: 180px;
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .stat-label {
+            color: #888;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #4f3cff;
+        }
+        .dashboard-charts {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+        .chart-section {
+            background: #fafbfc;
+            border-radius: 12px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+            padding: 24px 18px;
+            flex: 1 1 320px;
+            min-width: 320px;
+        }
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 18px;
+        }
+        .top-products {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .top-products li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 1rem;
+        }
+        .top-products li:last-child {
+            border-bottom: none;
+        }
+        .product-name {
+            color: #4f3cff;
+            font-weight: 500;
+        }
+        .product-sales {
+            color: #222;
+        }
+        .dashboard-insights {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .insight-card {
+            background: #fafbfc;
+            border-radius: 12px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+            padding: 18px 18px;
+            flex: 1 1 220px;
+            min-width: 220px;
+        }
+        .insight-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #4f3cff;
+            margin-bottom: 10px;
+        }
+        .insight-content {
+            color: #222;
+            font-size: 1rem;
+        }
+        .insight-content li {
+            margin-bottom: 6px;
+        }
+    </style>
+</body>
+</html>

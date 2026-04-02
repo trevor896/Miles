@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Miles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: white;
+            color: black;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links li {
+            margin: 0 15px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: black;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-toggle {
+            cursor: pointer;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            z-index: 1000;
+            padding: 8px 0;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu li {
+            margin: 0;
+        }
+        .dropdown-menu a {
+            padding: 10px 20px;
+            display: block;
+            white-space: nowrap;
+        }
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+            transform: none;
+        }
+        .right-section {
+            display: flex;
+            align-items: center;
+        }
+        .join-us {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .icons a {
+            margin: 0 10px;
+            font-size: 18px;
+            text-decoration: none;
+            color: black;
+        }
+        .icons a:hover {
+            color: #007bff;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        footer {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="brand">Miles</div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="marketplace.html"><i class="fas fa-shopping-bag"></i> Marketplace</a></li>
+            <li><a href="aboutus.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle"><i class="fas fa-tachometer-alt"></i> Dashboards <i class="fas fa-chevron-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="admin-dashboard.html"><i class="fas fa-crown"></i> Admin</a></li>
+                    <li><a href="seller-dashboard.html"><i class="fas fa-store"></i> Seller</a></li>
+                    <li><a href="buyer-dashboard.html"><i class="fas fa-shopping-cart"></i> Buyer</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="right-section">
+            <a href="login.html" class="join-us">Join Us</a>
+            <div class="icons">
+                <a href="#" title="Search"><i class="fas fa-search"></i></a>
+                <a href="#" title="User"><i class="fas fa-user"></i></a>
+                <a href="#" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+                <a href="#" title="Notifications"><i class="fas fa-bell"></i></a>
+            </div>
+        </div>
+    </nav>
+    <div class="about-hero" style="background: linear-gradient(rgba(10,20,40,0.7),rgba(10,20,40,0.7)), url('https://via.placeholder.com/1400x350?text=About+Us+Hero'); background-size: cover; background-position: center; padding: 90px 0 60px 0; text-align: center; color: #fff;">
+        <h1 style="font-size: 3em; margin: 0; font-weight: 700; letter-spacing: 2px;">About Us</h1>
+    </div>
+
+    <div style="background: #101820; color: #fff; padding: 40px 0 0 0;">
+        <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 30px; align-items: center; justify-content: center;">
+            <div style="flex: 1 1 350px; background: #18304a; border-radius: 12px; padding: 32px 28px; min-width: 320px;">
+                <div style="font-size: 0.95em; color: #7ecbff; margin-bottom: 10px;">| About Miles</div>
+                <h2 style="font-size: 2em; margin: 0 0 18px 0; font-weight: 700;">Empowering E-commerce Payments</h2>
+                <span style="display: inline-block; background: #007bff; color: #fff; font-size: 0.9em; border-radius: 8px; padding: 3px 14px; margin-bottom: 18px;">10+ Years Experience</span>
+                <p style="color: #c7d0db;">In the rapidly evolving world of e-commerce, having seamless payment solutions is crucial. Our team of payment experts is here to provide you with top-tier services. Whether you're a small online store or a global enterprise, we've got your transactions covered. Trust us with your payments, and focus on growing your business.</p>
+            </div>
+            <div style="flex: 1 1 350px; min-width: 320px; text-align: center;">
+                <img src="https://via.placeholder.com/400x250?text=About+Us+Image" alt="About Us" style="width: 100%; max-width: 400px; border-radius: 18px; object-fit: cover;">
+            </div>
+        </div>
+        <div style="max-width: 1100px; margin: 40px auto 0 auto; display: flex; justify-content: space-between; text-align: center; gap: 10px; flex-wrap: wrap;">
+            <div style="flex: 1 1 180px; min-width: 120px;">
+                <div style="font-size: 2em; font-weight: 700; color: #7ecbff;">55K+</div>
+                <div style="color: #c7d0db;">Happy Client</div>
+            </div>
+            <div style="flex: 1 1 180px; min-width: 120px;">
+                <div style="font-size: 2em; font-weight: 700; color: #7ecbff;">7K+</div>
+                <div style="color: #c7d0db;">Merchant Active</div>
+            </div>
+            <div style="flex: 1 1 180px; min-width: 120px;">
+                <div style="font-size: 2em; font-weight: 700; color: #7ecbff;">1K+</div>
+                <div style="color: #c7d0db;">Partner</div>
+            </div>
+            <div style="flex: 1 1 180px; min-width: 120px;">
+                <div style="font-size: 2em; font-weight: 700; color: #7ecbff;">4+</div>
+                <div style="color: #c7d0db;">Country</div>
+            </div>
+        </div>
+        <div style="max-width: 1100px; margin: 60px auto 0 auto;">
+            <h2 style="text-align: center; font-size: 2em; font-weight: 700; margin-bottom: 30px;">Why Choose Us</h2>
+            <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center;">
+                <div style="flex: 1 1 220px; background: #18304a; border-radius: 12px; padding: 28px 18px; min-width: 220px; text-align: center;">
+                    <i class="fas fa-shield-alt" style="font-size: 2.2em; color: #7ecbff; margin-bottom: 10px;"></i>
+                    <h3 style="margin: 10px 0 8px 0; font-size: 1.2em;">Security</h3>
+                    <p style="color: #c7d0db; font-size: 0.98em;">We prioritize the safety of your customers' data, adhering to the latest industry standards.</p>
+                </div>
+                <div style="flex: 1 1 220px; background: #18304a; border-radius: 12px; padding: 28px 18px; min-width: 220px; text-align: center;">
+                    <i class="fas fa-chart-line" style="font-size: 2.2em; color: #7ecbff; margin-bottom: 10px;"></i>
+                    <h3 style="margin: 10px 0 8px 0; font-size: 1.2em;">Scalability</h3>
+                    <p style="color: #c7d0db; font-size: 0.98em;">Our payment solutions ensure data security to industry standards.</p>
+                </div>
+                <div style="flex: 1 1 220px; background: #18304a; border-radius: 12px; padding: 28px 18px; min-width: 220px; text-align: center;">
+                    <i class="fas fa-headset" style="font-size: 2.2em; color: #7ecbff; margin-bottom: 10px;"></i>
+                    <h3 style="margin: 10px 0 8px 0; font-size: 1.2em;">24/7 Support</h3>
+                    <p style="color: #c7d0db; font-size: 0.98em;">Our dedicated support team is available around the clock to assist you with any issues.</p>
+                </div>
+            </div>
+        </div>
+        <div style="max-width: 1100px; margin: 60px auto 0 auto; display: flex; flex-wrap: wrap; gap: 30px; align-items: center; justify-content: center;">
+            <div style="flex: 1 1 350px; min-width: 320px; text-align: center;">
+                <img src="https://via.placeholder.com/400x250?text=How+It+Works+Image" alt="How it works" style="width: 100%; max-width: 400px; border-radius: 18px; object-fit: cover;">
+            </div>
+            <div style="flex: 1 1 350px; background: #18304a; border-radius: 12px; padding: 32px 28px; min-width: 320px;">
+                <div style="font-size: 0.95em; color: #7ecbff; margin-bottom: 10px;">| How it Works</div>
+                <h2 style="font-size: 1.5em; margin: 0 0 18px 0; font-weight: 700;">Use only with 4 easy steps</h2>
+                <ol style="color: #c7d0db; font-size: 1.05em; padding-left: 20px;">
+                    <li><b>Sign Up and Create an Account</b><br><span style="font-weight: normal;">Begin your journey by registering and creating your account.</span></li>
+                    <li><b>Integration</b><br><span style="font-weight: normal;">Connect our seamless payment solutions into your platform.</span></li>
+                    <li><b>Start Accepting Payments</b><br><span style="font-weight: normal;">Once integrated, you're ready to start accepting payments immediately.</span></li>
+                    <li><b>Real-Time Notifications</b><br><span style="font-weight: normal;">Stay informed with real-time notifications. Receive instant updates on successful transactions.</span></li>
+                </ol>
+                <a href="#" style="display: inline-block; margin-top: 18px; background: #007bff; color: #fff; padding: 10px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">Get Started</a>
+            </div>
+        </div>
+        <div style="max-width: 1100px; margin: 60px auto 0 auto; display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; opacity: 0.7;">
+            <img src="https://via.placeholder.com/120x40?text=Shoppedia" alt="Shoppedia" style="height: 40px;">
+            <img src="https://via.placeholder.com/120x40?text=T-Commerce" alt="T-Commerce" style="height: 40px;">
+            <img src="https://via.placeholder.com/120x40?text=E-commerce" alt="E-commerce" style="height: 40px;">
+            <img src="https://via.placeholder.com/120x40?text=Commerce" alt="Commerce" style="height: 40px;">
+            <img src="https://via.placeholder.com/120x40?text=Shoppedia" alt="Shoppedia" style="height: 40px;">
+        </div>
+        <div style="max-width: 700px; margin: 60px auto 0 auto; background: #18304a; border-radius: 12px; padding: 32px 28px; text-align: center;">
+            <h2 style="margin-bottom: 18px;">Subscribe to Our Newsletter</h2>
+            <form style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <input type="email" placeholder="Email" style="padding: 10px 16px; border-radius: 6px; border: none; font-size: 1em; min-width: 220px;">
+                <button type="submit" style="background: #007bff; color: #fff; border: none; border-radius: 6px; padding: 10px 24px; font-size: 1em; cursor: pointer;">Subscribe</button>
+            </form>
+            <div style="color: #c7d0db; font-size: 0.95em; margin-top: 10px;">*Subscribe to our newsletter to receive early discount offers, updates and new products info.</div>
+        </div>
+        <footer style="background: #101820; color: #c7d0db; padding: 40px 0 0 0; margin-top: 60px;">
+            <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+                <div style="flex: 1 1 200px; min-width: 180px;">
+                    <h3 style="color: #fff;">Miles</h3>
+                    <p>UT elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.</p>
+                    <div style="margin-top: 10px;">
+                        <a href="#" style="color: #7ecbff; margin-right: 10px;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" style="color: #7ecbff; margin-right: 10px;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: #7ecbff; margin-right: 10px;"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" style="color: #7ecbff;"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div style="flex: 1 1 200px; min-width: 180px;">
+                    <h4 style="color: #fff;">Get in Touch</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 5th St, Emma, NY No 44</p>
+                    <p><i class="fas fa-phone"></i> +99405 43156</p>
+                    <p><i class="fas fa-envelope"></i> help@miles.com</p>
+                </div>
+                <div style="flex: 1 1 200px; min-width: 180px;">
+                    <h4 style="color: #fff;">Company</h4>
+                    <ul style="list-style: none; padding: 0; color: #c7d0db;">
+                        <li>About</li>
+                        <li>News</li>
+                        <li>Pricing</li>
+                        <li>Team</li>
+                    </ul>
+                </div>
+                <div style="flex: 1 1 200px; min-width: 180px;">
+                    <h4 style="color: #fff;">Quick Links</h4>
+                    <ul style="list-style: none; padding: 0; color: #c7d0db;">
+                        <li>Blog</li>
+                        <li>FAQ</li>
+                        <li>Testimonials</li>
+                    </ul>
+                </div>
+                <div style="flex: 1 1 200px; min-width: 180px;">
+                    <h4 style="color: #fff;">Operational Time</h4>
+                    <p>Mon - Fri: 9AM - 4PM</p>
+                    <p>Sat - Sun: Closed</p>
+                </div>
+            </div>
+            <div style="text-align: center; color: #7ecbff; margin-top: 30px; font-size: 0.95em;">
+                &copy; 2026 Miles. All rights reserved. &nbsp; | &nbsp; <a href="#" style="color: #7ecbff; text-decoration: underline;">Privacy Policy</a> &nbsp; | &nbsp; <a href="#" style="color: #7ecbff; text-decoration: underline;">Terms & Services</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

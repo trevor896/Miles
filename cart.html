@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Miles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+        nav { background-color: white; color: black; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-bottom: 1px solid #ccc; }
+        .brand { font-size: 24px; font-weight: bold; }
+        .nav-links { list-style: none; display: flex; margin: 0; padding: 0; }
+        .nav-links li { margin: 0 15px; }
+        .nav-links a { text-decoration: none; color: black; }
+        .nav-links a:hover { text-decoration: underline; }
+        .right-section { display: flex; align-items: center; }
+        .join-us { background-color: #007bff; color: white; border: none; padding: 8px 16px; cursor: pointer; text-decoration: none; border-radius: 4px; }
+        .icons a { margin: 0 10px; font-size: 18px; text-decoration: none; color: black; }
+        .icons a:hover { color: #007bff; }
+        .cart-list { max-width: 800px; margin: 40px auto; background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 32px; }
+        .cart-title { font-size: 2em; font-weight: bold; margin-bottom: 24px; color: #222; }
+        .cart-items { list-style: none; padding: 0; }
+        .cart-item { display: flex; align-items: center; gap: 24px; border-bottom: 1px solid #eee; padding: 18px 0; }
+        .cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+        .cart-item-details { flex: 1; }
+        .cart-item-name { font-weight: bold; font-size: 1.1em; color: #222; }
+        .cart-item-price { color: #007bff; font-size: 1em; font-weight: bold; }
+        .remove-btn { background: #ff5a5f; color: #fff; border: none; border-radius: 8px; padding: 6px 14px; font-weight: bold; cursor: pointer; margin-left: 16px; }
+        .empty-cart { text-align: center; color: #aaa; font-size: 1.2em; margin-top: 40px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="brand">Miles</div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="marketplace.html"><i class="fas fa-shopping-bag"></i> Marketplace</a></li>
+            <li><a href="aboutus.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle"><i class="fas fa-tachometer-alt"></i> Dashboards <i class="fas fa-chevron-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="admin-dashboard.html"><i class="fas fa-crown"></i> Admin</a></li>
+                    <li><a href="seller-dashboard.html"><i class="fas fa-store"></i> Seller</a></li>
+                    <li><a href="buyer-dashboard.html"><i class="fas fa-shopping-cart"></i> Buyer</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="right-section">
+            <a href="login.html" class="join-us">Join Us</a>
+            <div class="icons">
+                <a href="#" title="Search"><i class="fas fa-search"></i></a>
+                <a href="#" title="User"><i class="fas fa-user"></i></a>
+                <a href="cart.html" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+                <a href="#" title="Notifications"><i class="fas fa-bell"></i></a>
+            </div>
+        </div>
+    </nav>
+    <div class="cart-list">
+        <div class="cart-title">Shopping Cart</div>
+        <ul class="cart-items" id="cartItems"></ul>
+        <div class="empty-cart" id="emptyCartMsg">Your cart is empty.</div>
+    </div>
+    <script>
+        function renderCart() {
+            const cartItems = JSON.parse(localStorage.getItem('milesCart') || '[]');
+            const cartList = document.getElementById('cartItems');
+            const emptyMsg = document.getElementById('emptyCartMsg');
+            cartList.innerHTML = '';
+            if (cartItems.length === 0) {
+                emptyMsg.style.display = 'block';
+                return;
+            }
+            emptyMsg.style.display = 'none';
+            cartItems.forEach((item, idx) => {
+                const li = document.createElement('li');
+                li.className = 'cart-item';
+                li.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">${item.price}</div>
+                    </div>
+                    <button class="remove-btn" onclick="removeFromCart(${idx})">Remove</button>
+                `;
+                cartList.appendChild(li);
+            });
+        }
+        function removeFromCart(idx) {
+            let cartItems = JSON.parse(localStorage.getItem('milesCart') || '[]');
+            cartItems.splice(idx, 1);
+            localStorage.setItem('milesCart', JSON.stringify(cartItems));
+            renderCart();
+        }
+        document.addEventListener('DOMContentLoaded', renderCart);
+    </script>
+</body>
+</html>

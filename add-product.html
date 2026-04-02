@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Miles Seller Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f6fa; margin: 0; }
+        .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 32px; }
+        h2 { font-size: 2em; font-weight: bold; color: #222; margin-bottom: 24px; }
+        .form-group { margin-bottom: 18px; }
+        label { font-weight: bold; color: #333; margin-bottom: 6px; display: block; }
+        input, select, textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e0e0e0; font-size: 1em; background: #f8f8f8; margin-top: 4px; }
+        input[type="file"] { background: #fff; }
+        .image-preview { width: 100%; max-width: 220px; height: 220px; border-radius: 12px; object-fit: cover; margin: 12px 0; background: #f5f6fa; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 1.1em; }
+        .btn-row { display: flex; gap: 16px; margin-top: 24px; }
+        .submit-btn { background: #4f3cff; color: #fff; border: none; border-radius: 8px; padding: 12px 32px; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: background 0.2s; }
+        .submit-btn:hover { background: #3729b1; }
+        .reset-btn { background: #e0e0e0; color: #222; border: none; border-radius: 8px; padding: 12px 32px; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: background 0.2s; }
+        .reset-btn:hover { background: #ccc; }
+        .success-msg { color: #007bff; font-weight: bold; margin-top: 18px; }
+        .error-msg { color: #ff5a5f; font-weight: bold; margin-top: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Add New Product</h2>
+        <form id="addProductForm">
+            <div class="form-group">
+                <label for="productName">Product Name</label>
+                <input type="text" id="productName" name="productName" required maxlength="60">
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Selling Price ($)</label>
+                <input type="number" id="productPrice" name="productPrice" required min="1" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="productCategory">Category</label>
+                <select id="productCategory" name="productCategory" required>
+                    <option value="Sweatshirt">Sweatshirt</option>
+                    <option value="T-Shirt">T-Shirt</option>
+                    <option value="Dress">Dress</option>
+                    <option value="Pants and Skirt">Pants and Skirt</option>
+                    <option value="Swimsuit">Swimsuit</option>
+                    <option value="Stuff and Accessories">Stuff and Accessories</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="productType">Type</label>
+                <select id="productType" name="productType" required>
+                    <option value="Basic">Basic</option>
+                    <option value="Pattern">Pattern</option>
+                    <option value="Hoodie">Hoodie</option>
+                    <option value="Zipper">Zipper</option>
+                    <option value="Oversize">Oversize</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="productColour">Colour</label>
+                <select id="productColour" name="productColour" required>
+                    <option value="Black">Black</option>
+                    <option value="Red">Red</option>
+                    <option value="Brown">Brown</option>
+                    <option value="Multicolour">Multicolour</option>
+                    <option value="Grey">Grey</option>
+                    <option value="Blue">Blue</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="productSize">Size</label>
+                <select id="productSize" name="productSize" required>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="productDiscount">Discount (%)</label>
+                <input type="number" id="productDiscount" name="productDiscount" min="0" max="100" step="1" placeholder="Optional">
+            </div>
+            <div class="form-group">
+                <label for="productImage">Product Image</label>
+                <input type="file" id="productImage" name="productImage" accept="image/*" required>
+                <div class="image-preview" id="imagePreview">Image preview</div>
+            </div>
+            <div class="form-group">
+                <label for="productDescription">Description</label>
+                <textarea id="productDescription" name="productDescription" rows="3" maxlength="200" placeholder="Describe your product (optional)"></textarea>
+            </div>
+            <div class="btn-row">
+                <button type="submit" class="submit-btn"><i class="fas fa-plus"></i> Add Product</button>
+                <button type="reset" class="reset-btn">Reset</button>
+            </div>
+            <div class="success-msg" id="successMsg" style="display:none;"></div>
+            <div class="error-msg" id="errorMsg" style="display:none;"></div>
+        </form>
+    </div>
+    <script>
+        // Image preview logic
+        document.getElementById('productImage').addEventListener('change', function(e) {
+            const preview = document.getElementById('imagePreview');
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    preview.innerHTML = `<img src="${ev.target.result}" style="width:100%; height:220px; border-radius:12px; object-fit:cover;">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = 'Image preview';
+            }
+        });
+
+        // Form submission logic (API placeholder)
+        document.getElementById('addProductForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const successMsg = document.getElementById('successMsg');
+            const errorMsg = document.getElementById('errorMsg');
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            const formData = new FormData(this);
+            // Prepare product data
+            const productData = {
+                name: formData.get('productName'),
+                price: parseFloat(formData.get('productPrice')),
+                category: formData.get('productCategory'),
+                type: formData.get('productType'),
+                colour: formData.get('productColour'),
+                size: formData.get('productSize'),
+                description: formData.get('productDescription'),
+                stock_quantity: 1,
+                discount: formData.get('productDiscount') || 0
+            };
+            // Handle image upload
+            const imageFile = formData.get('productImage');
+            if (imageFile && imageFile.size > 0) {
+                // Convert image to base64 (for demo, ideally use real upload API)
+                const reader = new FileReader();
+                reader.onload = async function(ev) {
+                    productData.image_url = ev.target.result;
+                    await submitProduct(productData);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                productData.image_url = '';
+                await submitProduct(productData);
+            }
+            async function submitProduct(data) {
+                try {
+                    // Get JWT token from localStorage (assume login stores it)
+                    const token = localStorage.getItem('token');
+                    const response = await fetch('/api/products', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': token ? `Bearer ${token}` : ''
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        successMsg.textContent = 'Product added successfully!';
+                        successMsg.style.display = 'block';
+                        document.getElementById('addProductForm').reset();
+                        document.getElementById('imagePreview').innerHTML = 'Image preview';
+                        // Optionally redirect to marketplace or dashboard
+                    } else {
+                        errorMsg.textContent = result.error || 'Failed to add product. Please try again.';
+                        errorMsg.style.display = 'block';
+                    }
+                } catch (err) {
+                    errorMsg.textContent = 'Failed to add product. Please try again.';
+                    errorMsg.style.display = 'block';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

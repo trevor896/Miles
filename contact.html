@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Miles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #18171c;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: white;
+            color: black;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+            position: relative;
+            z-index: 10;
+        }
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links li {
+            margin: 0 15px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: black;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-toggle {
+            cursor: pointer;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            z-index: 1000;
+            padding: 8px 0;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu li {
+            margin: 0;
+        }
+        .dropdown-menu a {
+            padding: 10px 20px;
+            display: block;
+            white-space: nowrap;
+        }
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+            transform: none;
+        }
+        .right-section {
+            display: flex;
+            align-items: center;
+        }
+        .join-us {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .icons a {
+            margin: 0 10px;
+            font-size: 18px;
+            text-decoration: none;
+            color: black;
+        }
+        .icons a:hover {
+            color: #007bff;
+        }
+        .wave {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(120deg, #ffd700 0%, #18171c 100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.2;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px 0 20px;
+        }
+        .contact-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-top: 60px;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .contact-desc {
+            text-align: center;
+            color: #bdbdbd;
+            margin-bottom: 40px;
+        }
+        .get-in-touch {
+            color: #ffd700;
+            font-size: 2em;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .info-boxes {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .info-box {
+            background: #23222a;
+            border-radius: 8px;
+            padding: 30px 20px;
+            flex: 1;
+            margin: 10px;
+            min-width: 220px;
+            text-align: center;
+        }
+        .info-box i {
+            font-size: 2em;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        .info-box h4 {
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 1.2em;
+        }
+        .info-box p {
+            color: #bdbdbd;
+            margin-bottom: 8px;
+        }
+        .info-box a {
+            color: #ffd700;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .contact-form-section {
+            display: flex;
+            justify-content: space-between;
+            background: #23222a;
+            border-radius: 8px;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+            margin-right: 40px;
+        }
+        .contact-form label {
+            color: #bdbdbd;
+            font-size: 1em;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: #18171c;
+            color: #fff;
+            font-size: 1em;
+        }
+        .contact-form textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .contact-form button {
+            background: #ffd700;
+            color: #18171c;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .contact-form button:hover {
+            background: #e6c200;
+        }
+        .contact-query {
+            flex: 1;
+            min-width: 300px;
+            color: #ffd700;
+            font-size: 1.5em;
+            margin-left: 40px;
+        }
+        .contact-query-desc {
+            color: #bdbdbd;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+        .footer {
+            background: #23222a;
+            color: #ffd700;
+            padding: 40px 20px 20px 20px;
+            text-align: left;
+        }
+        .footer .footer-title {
+            font-size: 2em;
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        .footer .footer-info {
+            color: #bdbdbd;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+        .footer .footer-social {
+            margin-bottom: 20px;
+        }
+        .footer .footer-social a {
+            color: #ffd700;
+            margin-right: 15px;
+            font-size: 1.2em;
+            text-decoration: none;
+        }
+        .footer .footer-social a:hover {
+            color: #fff;
+        }
+        .footer-bottom {
+            color: #bdbdbd;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+        .footer-links {
+            margin-top: 10px;
+        }
+        .footer-links a {
+            color: #ffd700;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            color: #fff;
+        }
+        @media (max-width: 900px) {
+            .info-boxes, .contact-form-section {
+                flex-direction: column;
+            }
+            .contact-form {
+                margin-right: 0;
+            }
+            .contact-query {
+                margin-left: 0;
+                margin-top: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="brand">Miles</div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="marketplace.html"><i class="fas fa-shopping-bag"></i> Marketplace</a></li>
+            <li><a href="aboutus.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle"><i class="fas fa-tachometer-alt"></i> Dashboards <i class="fas fa-chevron-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="admin-dashboard.html"><i class="fas fa-crown"></i> Admin</a></li>
+                    <li><a href="seller-dashboard.html"><i class="fas fa-store"></i> Seller</a></li>
+                    <li><a href="buyer-dashboard.html"><i class="fas fa-shopping-cart"></i> Buyer</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="right-section">
+            <a href="login.html" class="join-us">Join Us</a>
+            <div class="icons">
+                <a href="#" title="Search"><i class="fas fa-search"></i></a>
+                <a href="#" title="User"><i class="fas fa-user"></i></a>
+                <a href="#" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+                <a href="#" title="Notifications"><i class="fas fa-bell"></i></a>
+            </div>
+        </div>
+    </nav>
+    <div class="wave"></div>
+    <div class="container">
+        <div class="contact-title">CONTACT US</div>
+        <div class="contact-desc">Reach out for support, business inquiries, or general questions. We're here to help!</div>
+        <div class="get-in-touch">GET IN TOUCH</div>
+        <div class="info-boxes">
+            <div class="info-box">
+                <i class="fas fa-map-marker-alt"></i>
+                <h4>Office Location</h4>
+                <p>University of Zimbabwe Main Campus</p>
+                <a href="#">Direction</a>
+            </div>
+            <div class="info-box">
+                <i class="fas fa-clock"></i>
+                <h4>Working Hours</h4>
+                <p>Mon-Fri: 8:00am - 6:00pm<br>Sat: 9:00am - 2:00pm</p>
+                <a href="#">Learn more</a>
+            </div>
+            <div class="info-box">
+                <i class="fas fa-envelope"></i>
+                <h4>Communication</h4>
+                <p>+263 78 069 3297<br>trevorkutsvara01@gmail.com</p>
+                <a href="#">Support</a>
+            </div>
+        </div>
+        <div class="contact-form-section">
+            <form class="contact-form">
+                <label for="name">What's your Name?</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Your email</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <div class="contact-query">
+                CONTACT US
+                <div class="contact-query-desc">
+                    Have any query? We're ready to help you with any questions or support you need.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footer-title">Let's talk</div>
+        <div class="footer-social">
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-pinterest-p"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+        <div class="footer-info">
+            University of Zimbabwe Main Campus<br>
+            trevorkutsvara01@gmail.com<br>
+            +263 78 069 3297
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Miles. All rights reserved.
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Condition</a>
+        </div>
+    </div>
+</body>
+</html>
