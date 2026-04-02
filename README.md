@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Miles E-commerce Backend
 
 A full-stack e-commerce platform with user role management (Admin, Buyer, Seller) built with Node.js, Express, and SQLite.
@@ -182,3 +183,4 @@ miles-ecommerce/
 ## Support
 
 For issues or questions, please check the code comments in `server.js` or create an issue in the repository.
+=======
